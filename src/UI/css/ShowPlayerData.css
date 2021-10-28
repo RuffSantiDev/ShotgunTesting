@@ -1,0 +1,17 @@
+.PlayerSingleData {
+  display: flex;
+  font-size: 8px;
+  border: 1px;
+  border-style: solid;
+  border-color: red;
+}
+
+.ShowPlayerData {
+  border: 1px;
+  border-style: solid;
+  border-color: red;
+}
+
+p {
+font-size: 12px;
+}

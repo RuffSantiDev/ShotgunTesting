@@ -1,0 +1,12 @@
+.Standings {
+  background-color:#0C4063;
+  padding: 4px;
+
+}
+
+.PlayerInfo {
+  padding: 2.5%;
+  color: aqua;
+  display: inline-block;
+  margin: 2.5%; 
+}

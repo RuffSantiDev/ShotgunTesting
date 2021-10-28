@@ -1,0 +1,24 @@
+Game Loads
+
+First Sreen = Start Screen
+-> Enter Number of Players from 2 to 6
+  -> will generate Player Objects
+-> Enter Player Names
+  -> Will update Player Names
+-> Start Game
+  -> Set Game
+  -> Start First Round
+
+Second Screen = Round x
+
+-> Each player enters guess
+  -> 1 to 4, even, uneven
+  -> store guess in array
+-> card is drawn
+  -> result is compared to guesses
+-> points are awarded
+
+-> Next round begins
+  -> verify player guess count with round count (???)
+
+
