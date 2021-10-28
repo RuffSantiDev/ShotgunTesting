@@ -24,9 +24,10 @@
   // the value of the current card is stored in the card array of the game
   // the card is displayed to the players
   
-  // DETERMINE INDIVIDUAL POINTS AND SCORES - FUNCTION
 
-  // DETERMINE INDIVIDUAL PLAYER  POINTS - FUNCTION
+  // The Following are player methods, which will be added to the player class.
+
+  // DETERMINE INDIVIDUAL PLAYER  POINTS - Player Method determineCurrentResult()
   // a function compares the guess of each player against the current card
   // --> The player receives 1 point if even/uneven is true
   // --> The player receives 2 points if the number is correct
@@ -46,6 +47,10 @@
         // if the wasRight turns out to be false at some point the while loop will end
     // if the current wasRight is false, multiplier is reset to 1
 
+  // DETERMINE INDIVIDUAL PLAYER SCORE
+  // a function determines the current score for each player and updates it via the player method updateScore(newPoints)
+  // the individual score is multiplied by the multiplier value and added to the current score
+
   // DETERMINE PLAYER SHOTGUN STATUS
   // the player receives shotgun status when he was right for three times in a row
   // the function checks the current shotgun status and the current multiplier value
@@ -53,8 +58,5 @@
   // if the current multiplier is <3 the player has no shotgun status (isShotgun = false)
   // the shotgun status is set via the player method setIsShotgun(isShotgun)
 
-  // DETERMINE PLAYER SCORE
-  // a function determines for each player
-  // -> the multiplier value ('was right in a row')
-  //    -> the function takes a look at the current value -> .wasRight[currentRound]
-  // -> 
+
+  

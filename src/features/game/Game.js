@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from 'react-redux'
+import { useState, useEffect } from "react";
 
 import { activateGame, deactivateGame, setNrOfPlayers, createPlayers, setGame, toggleNextRound } from "./gameSlice";
 
@@ -18,7 +19,9 @@ export const Game = () => {
   const gameState = useSelector((state) => state.game.gameState);
   const numberOfPlayers = useSelector((state) => state.game.numberOfPlayers);
   const players = useSelector ((state) => state.game.players);
-  const round = useSelector((state) => state.game.round);
+  const currentRound = useSelector((state) => state.game.currentRound);
+
+ 
 
   const startScreen = (
       <StartScreen 
@@ -35,25 +38,26 @@ export const Game = () => {
     );
 
     const displayRound = (
-      <Round round={round} numberOfPlayers={numberOfPlayers} players={players}/>
+      <Round round={currentRound} numberOfPlayers={numberOfPlayers} players={players}/>
     );
     
-    const verifyData = (
-      <div>
+    function verifyData(){
+      return <div>
       <ShowPlayerData />
       </div>
-    );
+    }
+    
 
 
     return (
       <div className="game">
         {gameState === false ? startScreen : <p></p> }
 
-        {(round > 0 && gameState === true) ? displayRound : <p></p>}
+        {(currentRound > 0 && gameState === true) ? displayRound : <p></p>}
       
 
         {gameState === true ? footer : <p></p>}
-        {verifyData}
+        {verifyData()}
       </div>
     )
   

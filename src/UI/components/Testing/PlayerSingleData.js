@@ -2,6 +2,24 @@ import React from "react";
 
 export const PlayerSingleData = (props) => {
 
+  const isShotgunValue = () => {
+    if(props.player.isShotgun === true){
+      return <p>true</p>;
+      } else {
+        return <p>false</p>;
+      }
+  }
+
+  const showGuesses = (
+    <ul>
+      {props.player.guesses.map(guess => {
+        return <li>{guess}</li>
+      })}
+
+
+    </ul>
+  )
+
     return (
       <div className="PlayerSingleData">
         <p>Player ID: {props.player.id}</p>
@@ -9,10 +27,10 @@ export const PlayerSingleData = (props) => {
         {/* {props.player.guesses.map(guess => {
           return <p>{guess}</p>
         })} */}
-        <p>guesses: {props.player.guesses}</p>
+        <div><p>guesses:</p> {showGuesses}</div>
         <p>Score: {props.player.score}</p>
         <p>Turn Count: {props.player.turnCount}</p>
-        <p>Is Shotgun: {props.player.isShotgun} </p>
+        <div><p>Is Shotgun:</p> {isShotgunValue()}</div>
       </div>
     )
 }

@@ -1,16 +1,24 @@
 import React from "react";
+import { useSelector } from 'react-redux'
 import { useState, useEffect } from "react";
 
 export const EnterGuess = (props) => {
 
-  const [guess, setGuess] = useState('even');
+  const [guess, setGuess] = useState(null);
   const [showSlider, setShowSlider] = useState(false);
-  const [guessType, setGuessType] = useState('even');
-  
+  const [guessType, setGuessType] = useState(null);
+  const [guessSubmitted, setGuessSubmitted] = useState(false);
+
+  const currentRound = useSelector((state) => state.game.currentRound);
+
+
   useEffect(() => {
     ToggleShowSlider(guessType);
+  }, [guessType]);
 
-  }, [guessType])
+  useEffect (() => {
+    showButton()
+  }, [guessSubmitted]);
 
   function ToggleShowSlider(guessType) {
     if (guessType === 'number') {
@@ -26,18 +34,21 @@ export const EnterGuess = (props) => {
     setGuessType(e.target.value);
 
     ToggleShowSlider(guessType);
-    console.log(guessType);
+    // console.log(guessType);
   }
 
   function handleSliderChange(e){
     setGuess(e.target.value);
-    console.log(guess);
+    // console.log(guess);
   }
 
 
   function handleSubmit() {
+    setGuessSubmitted(true);
     props.player.addGuess(guess);
-
+    props.toggleNextPlayer();
+    setGuess(null);
+    setGuessType(null);
   }
   const numberSlider = (
     <div id="numberSlider" >
@@ -54,23 +65,34 @@ export const EnterGuess = (props) => {
     </div>
     );
 
+    function showButton(){
+      while(props.player.turnCount < currentRound){
+      return <button onClick={handleSubmit} >Yes!</button>
+    } 
+    };
 
+    function showQustion(){
+      if (guess === null){
+      } else {
+        return <p>Do you want to go with "{guess}"?</p>
+      }
+    }
 
 
     return (
       <div className="EnterGuess" >
         <h3> {props.player.name}, <br /> Enter your guess! </h3>
 
-        <form >
+
           <select id="guessType" name="guessType" onChange={handleGuessTypeChange}>
             <option value="even">Even</option>
             <option value="uneven">Uneven</option>
             <option value="number">Number</option>
           </select>
           {showSlider === true ? numberSlider : <p></p>}
-          <p>Do you want to go with "{guess}"?</p>
-          <button onClick={handleSubmit} >Do it!</button>
-        </form>
+          {showQustion()}
+          {/* <button onClick={handleSubmit} >Do it!</button> */}
+        {showButton()}
       </div>
     )
 

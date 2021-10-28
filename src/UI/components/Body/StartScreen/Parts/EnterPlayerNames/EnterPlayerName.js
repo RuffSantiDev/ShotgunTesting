@@ -5,7 +5,7 @@ export const EnterPlayerName = (props) => {
   
   function handleStateChange(e) {
     let input = e.target.value;
-    props.player.setName(input);
+    props.player.name = input;
     // updatePlayerName
   }
 

@@ -15,9 +15,7 @@ export const ShowPlayerData = () => {
     return (
       <div className="ShowPlayerData">
           <p>For Testing: Show current Data</p>
-          <p>GameState {gameState} </p>
-
-          {players.map(player => {
+            {players.map(player => {
             return <PlayerSingleData className="PlayerSingleData" key={player.id} player={player} name={player.name} />
           })}
       </div>

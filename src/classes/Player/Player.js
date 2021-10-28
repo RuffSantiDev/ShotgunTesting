@@ -2,7 +2,7 @@
 
 // the player class defines the attributes of the players to be created.
 class Player {
-  constructor(id,name,guesses) {
+  constructor(id,name) {
     this._id = id;
     this._name = name;
     // stores the guesses of a player in an array.
@@ -18,24 +18,52 @@ class Player {
     // player becomes shotgun when he was right three times in a row
     // player looses shotgun status when he is wrong
     this._isShotgun = false;
-    //multiplier is independent of shotgun status
-    this._hasMultiplier = false;
-    // multiplier value resets when a player has guessed wrong
-    this._multiplierValue = 1;
+    //multiplier is independent of shotgun status and stores an array of multiplier values
+    this._multipliers = []
   }
   
+
+  // get functions
   get id(){
     return this._id;
-  }
-  setId(id){
-    this._id = id;
   }
   get name(){
     return this._name;
   }
-  setName(name){
-    this._name = name;
+  get guesses(){
+    return this._guesses;
   }
+  get individualPoints(){
+    return this._individualPoints;
+  }
+  get score(){
+    return this._score;
+  }
+  get turnCount(){
+    return this._turnCount;
+  }
+
+  get wasRight(){
+    return this._wasRight;
+  }
+  get isShotgun(){
+    return this._isShotgun;
+  }
+  get multipliers(){
+    return this._multipliers;
+  }
+
+// set functions
+  set id(id){
+    this._id = id;
+  }
+  set name(newName){
+    this._name = newName;
+  }
+
+
+// METHODS
+
   // when a player adds a bit, the turn count increases by one
   addGuess(guess){
     this._guesses.push(guess);
@@ -46,6 +74,10 @@ class Player {
     this._individualPoints.push(points);
   }
 
+  addMultiplierValue(multiplierValue){
+    this._multipliers.push(multiplierValue);
+  }
+
   addWasRight(wasRight){
     this._wasRight.push(wasRight);
   }
@@ -54,14 +86,17 @@ class Player {
     this._isShotgun = isShotgun;
   }
 
+  determineCurrentResult(){
+
+  }
 
 calculateScore(){
 
 }
 
   //recalculates the user score from the individual points
-  updateScore(points){
-    
+  updateScore(newPoints){
+    this._score += newPoints;
   }
 
   };
