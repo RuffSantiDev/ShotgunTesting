@@ -10,7 +10,7 @@ export const ShowPlayerData = () => {
 
   const players = useSelector(state => state.game.players);
   const gameState = useSelector(state => state.game.gameState)
-  const turnCount= useSelector(state => state.state)
+  const currentTurn= useSelector(state => state.state)
 
     return (
       <div className="ShowPlayerData">

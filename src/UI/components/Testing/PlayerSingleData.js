@@ -28,8 +28,8 @@ export const PlayerSingleData = (props) => {
           return <p>{guess}</p>
         })} */}
         <div><p>guesses:</p> {showGuesses}</div>
-        <p>Score: {props.player.score}</p>
-        <p>Turn Count: {props.player.turnCount}</p>
+        <p>Score: {props.player.currentScore}</p>
+        <p>Turn Count: {props.player.currentTurn}</p>
         <div><p>Is Shotgun:</p> {isShotgunValue()}</div>
       </div>
     )

@@ -39,3 +39,6 @@ player02.addIndividualPoints(player02Points);
 console.log('Player01 individual points: ' + player01.individualPoints);
 console.log('Player02 individual points: ' + player02.individualPoints);
 
+const getCurrentRoundPoints = player02.currentRoundPoints(currentRound);
+
+console.log(getCurrentRoundPoints);

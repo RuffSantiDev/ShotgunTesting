@@ -65,7 +65,7 @@ export const EnterGuess = (props) => {
     );
 
     function showButton(){
-      while(props.player.turnCount < currentRound){
+      while(props.player.currentTurn < currentRound){
       return <button onClick={handleSubmit} >Yes!</button>
     } 
     };
