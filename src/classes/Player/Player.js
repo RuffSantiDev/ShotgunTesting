@@ -64,7 +64,7 @@ class Player {
 
 // METHODS
 
-  // when a player adds a bit, the turn count increases by one
+  // when a player adds a guess, the turn count increases by one
   addGuess(guess){
     this._guesses.push(guess);
     this._turnCount++;
@@ -86,9 +86,42 @@ class Player {
     this._isShotgun = isShotgun;
   }
 
-  determineCurrentResult(){
+  determineCurrentRoundPoints(cards,currentRound){
+    const currentGuess = this._guesses[currentRound - 1];
+    const currentCard = cards[currentRound - 1];
+    let result;
+    if(currentGuess === 'even' || currentGuess === 'uneven') {
+      if(currentGuess === 'even' && currentCard % 2 == 0 ){
+        // guess is even and current card is even -> player was right
+        return 1;
+        } else if (currentGuess === 'even' && currentCard % 2 == 1){
+          // guess is even and card is uneven -> player was wrong
+          return  0;
+        } else if (currentGuess === 'uneven' && currentCard % 2 == 1) {
+          return 1;
+        } else if (currentGuess === 'uneven' && currentCard % 2 == 0){
+          return 0;
+        } else {
+          return 'error';
+        } 
+      } else {
+        const currentGuessNr = Number(currentGuess);
+        if (currentGuessNr === currentCard) {
+          return 2;
+        } else {
+          return 0;
+        }
+      }
 
-  }
+    }
+
+    determineCurrentMultiplier(currentRound){
+
+    }
+    
+
+
+  
 
 calculateScore(){
 
@@ -102,4 +135,6 @@ calculateScore(){
   };
 
 
-export default Player;
+// export default Player;
+
+module.exports = Player;

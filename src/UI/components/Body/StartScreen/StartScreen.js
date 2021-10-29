@@ -2,7 +2,7 @@ import React from "react";
 
 import { useDispatch } from "react-redux";
 
-import { activateGame, setGame, toggleNextRound } from '../../../../features/game/gameSlice';
+import { activateGame, randomizeCards, toggleNextRound } from '../../../../features/game/gameSlice';
 
 import '../../../css/StartScreen.css';
 
@@ -14,12 +14,13 @@ import { EnterPlayerNamesForm } from "./Parts/EnterPlayerNames/EnterPlayerNamesF
 
 export const StartScreen = (props) => {
 
+
   const dispatch = useDispatch();
 
   function startGame() {
     dispatch(activateGame());
-    dispatch(setGame());
     dispatch(toggleNextRound());
+    dispatch(randomizeCards());
   }
 
     return (

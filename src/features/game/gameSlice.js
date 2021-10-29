@@ -3,8 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import Player from "../../classes/Player/Player";
 
 // initiate a first default player based on the Player class
-const player01 = new Player ('Player 01', 'Paul');
-const player02 = new Player ('Player 02', 'John');
+const player01 = new Player ('Player 01', 'Enter Player Name');
+const player02 = new Player ('Player 02', 'Enter Player Name');
 
 
 export const gameSlice = createSlice({
@@ -14,7 +14,11 @@ export const gameSlice = createSlice({
     numberOfPlayers: 2,
     currentRound: 0,
     roundMax: 16,
+    // player objects need to be stored as serialized values for web transmission -> getPlayers & updatePlayers
+    // JSON.stringify to serialize
+    // JSON.parse to deserialize
     players: [player01, player02],
+    cards: [1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4],
   },
   reducers: {
     activateGame: (state) => {
@@ -25,6 +29,17 @@ export const gameSlice = createSlice({
     },
     setNrOfPlayers: (state, action) => {
       state.numberOfPlayers = action.payload;
+    },
+    // METHODS TO GET AND UPDATE DE-/SERIALIZED PLAYER OBJECT
+    getPlayers: (state) =>{
+      const players = state.players;
+      const deserializedPlayerObject = JSON.parse(players);
+      return deserializedPlayerObject;
+    },
+    updatePlayers: (state, action) => {
+      const players = action.payload;
+      const serializedPlayerObject = JSON.stringify(players);
+      state.players = serializedPlayerObject;
     },
     createPlayers: (state) => {
       let count = state.numberOfPlayers;
@@ -39,17 +54,18 @@ export const gameSlice = createSlice({
       // update players
       state.players = playerArray;
     },
-    updatePlayers: (state, action) => {
-      state.players = action.payload;
+    randomizeCards: (state) => {
+      const array = state.cards;
+      for (let i= array.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i+1));
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+      }
+      state.cards = array;
+      // console.log( '' + array);
     },
-    setGame: (state) => {
-      state.players.forEach(player => {
-    
-        // player.turnCount = 0;
-        // player._isShotgun = false;
-      });
-    
-    },
+
     toggleNextRound: (state) => {
       if(state.currentRound < state.roundMax) {  
          state.currentRound += 1;
@@ -58,6 +74,6 @@ export const gameSlice = createSlice({
   },
 })
 
-export const { activateGame, deactivateGame, setNrOfPlayers, createPlayers, updatePlayerName, setGame, toggleNextRound } = gameSlice.actions;
+export const { activateGame, deactivateGame, setNrOfPlayers, getPlayers, updatePlayers, createPlayers, updatePlayerName, randomizeCards, toggleNextRound } = gameSlice.actions;
 
 export default gameSlice.reducer;

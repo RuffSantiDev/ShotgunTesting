@@ -32,7 +32,6 @@ export const EnterGuess = (props) => {
  
   function handleGuessTypeChange(e) {
     setGuessType(e.target.value);
-
     ToggleShowSlider(guessType);
     // console.log(guessType);
   }
@@ -82,8 +81,6 @@ export const EnterGuess = (props) => {
     return (
       <div className="EnterGuess" >
         <h3> {props.player.name}, <br /> Enter your guess! </h3>
-
-
           <select id="guessType" name="guessType" onChange={handleGuessTypeChange}>
             <option value="even">Even</option>
             <option value="uneven">Uneven</option>
@@ -91,8 +88,7 @@ export const EnterGuess = (props) => {
           </select>
           {showSlider === true ? numberSlider : <p></p>}
           {showQustion()}
-          {/* <button onClick={handleSubmit} >Do it!</button> */}
-        {showButton()}
+          {showButton()}
       </div>
     )
 

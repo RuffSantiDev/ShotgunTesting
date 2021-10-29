@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useState, useEffect } from "react";
 
 import { EnterGuess } from "./Parts/EnterGuess";
@@ -19,19 +19,13 @@ export const Round = () => {
   const currentRound = useSelector((state) => state.game.currentRound);
   const numberOfPlayers = useSelector((state) => state.game.numberOfPlayers);
 
-  const [countPlayerSubmits, setPlayerSubmits] = useState(1);
   const [currentPlayerIndex, setcurrentPlayerIndex] = useState(0);
 
   useEffect(() => {
     RenderEnterGuessPrompt();
   }, [currentPlayerIndex]);
 
-  function EnterGuessLoop() {
-    for(let i=0; i < players.length; i++){
-      let player = players[i];
-      return <EnterGuess player={player} />
-    }
-  }
+
 
 
 
@@ -43,7 +37,6 @@ export const Round = () => {
     } else {
     }
   }
-
 
   function RenderEnterGuessPrompt(){
     const player = players[currentPlayerIndex];
