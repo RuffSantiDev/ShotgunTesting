@@ -8,10 +8,12 @@ class Player {
     this._guesses = [];
     this._currentGuess = null;
     this._individualPoints = [];
-    this._currentRoundPoints = null;
+    this._currentPoints = null;
     this._currentScore = 0;
     this._currentTurn = 0;
-    this._wasRight = [];
+    //current result stores true if a player has won and false if he has lost -> aber brauche ich das?
+    this._individualResults = [];
+    this._currentResult = null;
     this._isShotgun = false;
     this._multipliers = [];
     this._currentMultiplier = 1;
@@ -35,17 +37,21 @@ class Player {
   get individualPoints(){
     return this._individualPoints;
   }
-  get currentRoundPoints(){
-    return this._currentRoundPoints;
+  get currentPoints(){
+    return this._currentPoints;
   }
   get currentScore(){
     return this._currentScore;
   }
   get currentTurn(){
-    return this._currentTurn;  }
+    return this._currentTurn;  
+  }
 
-  get wasRight(){
-    return this._wasRight;
+  get individualResults(){
+    return this._individualResults;
+  }
+  get currentResult(){
+    return this._currentResult;
   }
   get isShotgun(){
     return this._isShotgun;
@@ -70,8 +76,8 @@ class Player {
   set currentGuess(currentGuess){
     this._currentGuess = currentGuess;
   }
-  set currentRoundPoints(currentRoundPoints){
-    this._currentRoundPoints = currentRoundPoints;
+  set currentPoints(currentPoints){
+    this._currentPoints = currentPoints;
   }
   set currentTurn(currentTurn){
     this._currentTurn = currentTurn;
@@ -108,8 +114,8 @@ class Player {
     this._multipliers.push(multiplier);
   }
 
-  addWasRight(wasRight){
-    this._wasRight.push(wasRight);
+  addWasRight(individualResults){
+    this._individualResults.push(individualResults);
   }
 
 
@@ -181,20 +187,20 @@ class Player {
 
   
 
-calculateScore(){
-  const index = this.currentRound -1;
-  const currentScore = this.currentScore;
-  const currentRoundPoints = this.individualPoints[index];
-  const currentMultiplier = this.currentMultiplier;
+  calculateScore(){
+    const index = this.currentRound -1;
+    const currentScore = this.currentScore;
+    const currentPoints = this.individualPoints[index];
+    const currentMultiplier = this.currentMultiplier;
   
-}
+    }
 
   //recalculates the user currentScore from the individual points
-  updateScore(newPoints){
-    this._currentScore += newPoints;
+  updateScore(score){
+    this._currentScore = score;
   }
 
-  };
+};
 
 
 // export default Player;

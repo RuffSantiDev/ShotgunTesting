@@ -4,11 +4,10 @@ import { useState, useEffect } from "react";
 
 export const EnterGuess = (props) => {
 
-  const [guess, setGuess] = useState(null);
+  const [guess, setGuess] = useState('even');
   const [showSlider, setShowSlider] = useState(false);
-  const [guessType, setGuessType] = useState(null);
-  const [guessSubmitted, setGuessSubmitted] = useState(false);
-
+  const [guessType, setGuessType] = useState('even');
+  const [showInquiry, setShowInquiry] = useState(false);
   const currentRound = useSelector((state) => state.game.currentRound);
 
 
@@ -16,9 +15,10 @@ export const EnterGuess = (props) => {
     ToggleShowSlider(guessType);
   }, [guessType]);
 
-  useEffect (() => {
-    showButton()
-  }, [guessSubmitted]);
+  useEffect(() => {
+    renderSelectGuessType();
+  }, [guess]);
+
 
   function ToggleShowSlider(guessType) {
     if (guessType === 'number') {
@@ -33,7 +33,7 @@ export const EnterGuess = (props) => {
   function handleGuessTypeChange(e) {
     setGuessType(e.target.value);
     ToggleShowSlider(guessType);
-    // console.log(guessType);
+    setShowInquiry(true);
   }
 
   function handleSliderChange(e){
@@ -41,14 +41,19 @@ export const EnterGuess = (props) => {
     // console.log(guess);
   }
 
-
-  function handleSubmit() {
-    setGuessSubmitted(true);
-    props.player.addGuess(guess);
-    props.toggleNextPlayer();
+  function resetGuess(){
     setGuess(null);
     setGuessType(null);
+    setGuess('even');
+    setGuessType('even');
   }
+
+  function handleSubmit() {
+    props.player.addGuess(guess);
+    props.submitGuess();
+    resetGuess();
+  }
+  
   const numberSlider = (
     <div id="numberSlider" >
       <span>1</span>
@@ -64,31 +69,32 @@ export const EnterGuess = (props) => {
     </div>
     );
 
-    function showButton(){
-      while(props.player.currentTurn < currentRound){
-      return <button onClick={handleSubmit} >Yes!</button>
-    } 
-    };
 
-    function showQustion(){
-      if (guess === null){
-      } else {
+
+    function renderInquiry(){
+      while(showInquiry === true) {
         return <p>Do you want to go with "{guess}"?</p>
       }
+    }
+
+    function renderSelectGuessType(){
+      return (
+        <select id="guessType" name="guessType" onChange={handleGuessTypeChange} >
+            <option value="even">Even</option>
+            <option value="uneven">Uneven</option>
+            <option value="number">Number</option>
+          </select>
+      )
     }
 
 
     return (
       <div className="EnterGuess" >
         <h3> {props.player.name}, <br /> Enter your guess! </h3>
-          <select id="guessType" name="guessType" onChange={handleGuessTypeChange}>
-            <option value="even">Even</option>
-            <option value="uneven">Uneven</option>
-            <option value="number">Number</option>
-          </select>
+          {renderSelectGuessType()}
           {showSlider === true ? numberSlider : <p></p>}
-          {showQustion()}
-          {showButton()}
+          {renderInquiry()}
+          <button onClick={handleSubmit} >Yes!</button>
       </div>
     )
 

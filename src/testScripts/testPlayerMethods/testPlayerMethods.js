@@ -1,6 +1,5 @@
-// import Player from "../classes/Player/Player";
 
-const Player = require('../classes/Player/Player');
+const Player = require('../../classes/Player/Player');
 
 const cards = [3,3,1,1,2,2,1,3,4,1,3,3,2,2,4,4]
 const currentRound = 1;
@@ -39,6 +38,6 @@ player02.addIndividualPoints(player02Points);
 console.log('Player01 individual points: ' + player01.individualPoints);
 console.log('Player02 individual points: ' + player02.individualPoints);
 
-const getCurrentRoundPoints = player02.currentRoundPoints(currentRound);
+const getCurrentRoundPoints = player02.currentPoints(currentRound);
 
 console.log(getCurrentRoundPoints);
