@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from 'react-redux'
 import { useState, useEffect } from "react";
 
 export const EnterGuess = (props) => {
@@ -8,7 +7,7 @@ export const EnterGuess = (props) => {
   const [showSlider, setShowSlider] = useState(false);
   const [guessType, setGuessType] = useState('even');
   const [showInquiry, setShowInquiry] = useState(false);
-  const currentRound = useSelector((state) => state.game.currentRound);
+  const [submitted, setSubmitted] = useState(false);
 
 
   useEffect(() => {
@@ -17,8 +16,9 @@ export const EnterGuess = (props) => {
 
   useEffect(() => {
     renderSelectGuessType();
-  }, [guess]);
+  }, [guess, submitted]);
 
+  
 
   function ToggleShowSlider(guessType) {
     if (guessType === 'number') {
@@ -42,16 +42,20 @@ export const EnterGuess = (props) => {
   }
 
   function resetGuess(){
-    setGuess(null);
-    setGuessType(null);
-    setGuess('even');
-    setGuessType('even');
+
   }
 
   function handleSubmit() {
     props.player.addGuess(guess);
     props.submitGuess();
+    setSubmitted('true');
     resetGuess();
+    setGuessType(null);
+    console.log(guess);
+    setGuess('even');
+    setGuessType('even');
+    console.log(guess);
+    console.log(submitted);
   }
   
   const numberSlider = (
@@ -71,11 +75,6 @@ export const EnterGuess = (props) => {
 
 
 
-    function renderInquiry(){
-      while(showInquiry === true) {
-        return <p>Do you want to go with "{guess}"?</p>
-      }
-    }
 
     function renderSelectGuessType(){
       return (
@@ -93,7 +92,7 @@ export const EnterGuess = (props) => {
         <h3> {props.player.name}, <br /> Enter your guess! </h3>
           {renderSelectGuessType()}
           {showSlider === true ? numberSlider : <p></p>}
-          {renderInquiry()}
+          <p>Do you want to go with "{guess}"?</p>
           <button onClick={handleSubmit} >Yes!</button>
       </div>
     )

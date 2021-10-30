@@ -63,7 +63,7 @@ export const gameSlice = createSlice({
         array[j] = temp;
       }
       state.cards = array;
-      // console.log( '' + array);
+      // console.log('generated cards array: ' + array);
     },
 
     toggleNextRound: (state) => {

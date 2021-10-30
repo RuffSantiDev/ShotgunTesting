@@ -14,7 +14,6 @@ import { EnterPlayerNamesForm } from "./Parts/EnterPlayerNames/EnterPlayerNamesF
 
 export const StartScreen = (props) => {
 
-
   const dispatch = useDispatch();
 
   function startGame() {
@@ -30,5 +29,4 @@ export const StartScreen = (props) => {
         <button id='startGame' onClick={startGame}>Start Game</button>
       </div>
     )
-
 }

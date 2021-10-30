@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { EnterGuess } from "./Parts/EnterGuess";
 // import { selectPlayer } from "./roundSlice";
 import { DrawCardPrompt } from "./Card/DrawCardPrompt";
-import { EnterGuessNextPlayer } from "./Parts/EnterGuessNextPlayer";
+import { ReadyNextPlayerPrompt } from "./Parts/ReadyNextPlayerPrompt";
 
 import './Round.css'
 
@@ -21,50 +21,63 @@ export const Round = () => {
   const cards = useSelector(state => state.game.cards);
   const currentRound = useSelector((state) => state.game.currentRound);
   const numberOfPlayers = useSelector((state) => state.game.numberOfPlayers);
-  const [playerSubmitCount, setplayerSubmitCount] = useState(0);
+  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [showEnterGuessPrompt, setShowEnterGuessPrompt] = useState(true);
-  const [showMidScreen, setShowMidScreen] = useState(false);
+  const [showMidScreen, setShowMidScreen] = useState(true);
   const [showDrawCardPrompt, setShowDrawCardPrompt] = useState(false);
   const [roundActive, setRoundActive] = useState(true);
-  const [currentPlayer, setCurrentPlayer] = useState(players[0]);
+  let [currentPlayer, setCurrentPlayer] = useState();
 
-  // useEffect(() => {
-  //   renderEnterGuessPrompt();
-  // }, [playerSubmitCount]);
+  useEffect(() => {
+    renderEnterGuessPrompt();
+  }, [currentPlayerIndex, showEnterGuessPrompt]);
 
-  // useEffect(() => {
-  //   renderDrawCardPrompt();
-  // }, [showDrawCardPrompt]);
+  useEffect(() => {
+    renderDrawCardPrompt();
+  }, [showDrawCardPrompt]);
 
-  function renderRoundFlow(){
-    while( roundActive === true ){
-      while(showEnterGuessPrompt === true){
-        return renderEnterGuessPrompt(currentPlayer);
+
+
+
+  function renderEnterGuessPrompt(){
+    while(showEnterGuessPrompt === true && currentPlayerIndex < numberOfPlayers) {
+        currentPlayer = players[currentPlayerIndex];
+        return <EnterGuess player={currentPlayer} submitGuess={submitGuess} />
       }
-      while(showMidScreen === true){
-        return renderMidScreen(currentPlayer);
-      }
-
-      
-
-    }
   }
+
+
 
   function submitGuess(){
-    let i = playerSubmitCount;
+    let i = currentPlayerIndex;
       i++;
-      setplayerSubmitCount(i);
-      console.log(playerSubmitCount);
-      setShowEnterGuessPrompt(false);
-      setCurrentPlayer(players[playerSubmitCount]);
-      setShowMidScreen(true);
+      setCurrentPlayerIndex(i);  
+      if (currentPlayerIndex === numberOfPlayers) {
+        setShowEnterGuessPrompt(false);
+      };
+      
+      console.log('this is the current player index: '+ currentPlayerIndex);
+      // setShowEnterGuessPrompt(false);
+      // setShowMidScreen(true);
 
   }
 
-  function renderEnterGuessPrompt(player){
-      return <EnterGuess player={player} submitGuess={submitGuess} />   
-    }
+
+
+
+
   
+    function renderNextPlayerPrompt(){
+      if(showMidScreen===true){
+        currentPlayer = players[currentPlayerIndex];
+        return <ReadyNextPlayerPrompt player={currentPlayer} playerReadyToGuess={playerReadyToGuess} />   
+      }
+    }
+
+    function playerReadyToGuess(){
+      setShowEnterGuessPrompt(true);
+      // setShowMidScreen(false);
+    }
 
   function drawCard(){
     setShowDrawCardPrompt(false);
@@ -76,16 +89,13 @@ export const Round = () => {
     }
   }
 
-  function renderMidScreen(currentPlayer){
-    return <EnterGuessNextPlayer player={currentPlayer} />
-  }
+
     
   return(
     <div className="Round" >
       <h2> Round {currentRound} </h2>
-      {/* {renderRoundFlow()} */}
-      {renderEnterGuessPrompt(currentPlayer)}
-      {renderMidScreen(currentPlayer)}
+      {renderEnterGuessPrompt()}
+      {renderNextPlayerPrompt()}
     </div>
   )
 }

@@ -11,7 +11,7 @@ class Player {
     this._currentPoints = null;
     this._currentScore = 0;
     this._currentTurn = 0;
-    //current result stores true if a player has won and false if he has lost -> aber brauche ich das?
+    //results are the multiplied values
     this._individualResults = [];
     this._currentResult = null;
     this._isShotgun = false;
@@ -46,7 +46,6 @@ class Player {
   get currentTurn(){
     return this._currentTurn;  
   }
-
   get individualResults(){
     return this._individualResults;
   }
@@ -192,8 +191,9 @@ class Player {
     const currentScore = this.currentScore;
     const currentPoints = this.individualPoints[index];
     const currentMultiplier = this.currentMultiplier;
-  
-    }
+    const newScore = currentScore + (currentPoints * currentMultiplier);
+    return newScore;
+  }
 
   //recalculates the user currentScore from the individual points
   updateScore(score){
