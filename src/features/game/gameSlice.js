@@ -70,7 +70,6 @@ export const gameSlice = createSlice({
       state.cards = array;
       // console.log('generated cards array: ' + array);
     },
-
     toggleNextRound: (state) => {
       if(state.currentRound < state.roundMax) {  
          state.currentRound += 1;
@@ -78,14 +77,16 @@ export const gameSlice = createSlice({
       },
 
       // this method should call the create round result from Player object after each round -> not working yet
-    updatePlayerScores: (state) => {
+    calculatePlayerResults: (state) => {
+      console.log('calculate player results called');
       state.players.forEach(player => {
         player.createRoundResult(state.cards);
       })
+      console.log(state.players[0]);
     }
   },
 })
 
-export const { activateGame, deactivateGame, setNrOfPlayers, getPlayers, updatePlayers, createPlayers, updatePlayerName, randomizeCards, toggleNextRound, updateCurrentPlayerIndex } = gameSlice.actions;
+export const { activateGame, deactivateGame, setNrOfPlayers, updateCurrentPlayerIndex, getPlayers, updatePlayers, createPlayers, updatePlayerName, randomizeCards, toggleNextRound, calculatePlayerResults} = gameSlice.actions;
 
 export default gameSlice.reducer;

@@ -7,9 +7,13 @@ import { EnterGuess } from "./Parts/EnterGuess";
 import { Card } from "../../../../features/card/Card";
 import { DrawCardPrompt } from "./Card/DrawCardPrompt";
 import { ReadyNextPlayerPrompt } from "./Parts/ReadyNextPlayerPrompt";
+import { Results } from "../../../../features/Results/Results";
 
 import './Round.css'
-import { updateCurrentPlayerIndex } from "../../../../features/game/gameSlice";
+
+// import game actions
+import { updateCurrentPlayerIndex, calculatePlayerResults } from "../../../../features/game/gameSlice";
+// import { Results } from "../../../../features/Results/Results";
 
 // Round contains everything that is needed for every Round.
 // Need to create a loop, which lets every player enter his guess
@@ -29,6 +33,7 @@ export const Round = () => {
   const [showEnterGuessPrompt, setShowEnterGuessPrompt] = useState(false);
   const [showNextPlayerPrompt, setShowNextPlayerPrompt] = useState(true);
   const [showCard, setShowCard] = useState(false);
+  const [showResults, setShowResults] = useState(false);
   const [roundActive, setRoundActive] = useState(true);
 
   // useEffect(() => {
@@ -40,10 +45,11 @@ export const Round = () => {
   // }, [showCard]);
 
   useEffect(() => {
-    renderNextPlayerPrompt()
-    renderEnterGuessPrompt()
-    renderDrawCardPrompt()
-    renderCard()
+    renderNextPlayerPrompt();
+    renderEnterGuessPrompt();
+    renderDrawCardPrompt();
+    renderCard();
+    renderResults();
   }, [currentPlayerIndex, showCard, showNextPlayerPrompt, showEnterGuessPrompt]);
 
 
@@ -100,12 +106,21 @@ export const Round = () => {
 
   function renderCard(){
     if(showCard === true){
-      return <Card currentRound={currentRound} cards={cards}/>
+      return <Card currentRound={currentRound} cards={cards} toggleShowResults={toggleShowResults} />
     }
-    
   }
 
+  function toggleShowResults(){
+    dispatch(calculatePlayerResults());
+  }
 
+  function renderResults(){
+    // if(showResults === true){
+      return <Results />
+    // }
+  }
+
+  
     
   return(
     <div className="Round" >
@@ -119,6 +134,7 @@ export const Round = () => {
       {renderEnterGuessPrompt()}
       {renderDrawCardPrompt()}
       {renderCard()}
+      {renderResults()}
     </div>
   )
 }

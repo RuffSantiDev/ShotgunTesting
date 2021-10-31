@@ -2,7 +2,7 @@ import React from "react";
 
 import { useDispatch } from "react-redux";
 
-import { activateGame, randomizeCards, toggleNextRound } from '../../../../features/game/gameSlice';
+import { startGame, activateGame, randomizeCards, toggleNextRound } from '../../../../features/game/gameSlice';
 
 import '../../../css/StartScreen.css';
 
@@ -16,7 +16,7 @@ export const StartScreen = (props) => {
 
   const dispatch = useDispatch();
 
-  function startGame() {
+  function handleClick() {
     dispatch(activateGame());
     dispatch(toggleNextRound());
     dispatch(randomizeCards());
@@ -26,7 +26,7 @@ export const StartScreen = (props) => {
       <div className="StartScreen">
         <EnterPlayerNumber />
         <EnterPlayerNamesForm /> 
-        <button id='startGame' onClick={startGame}>Start Game</button>
+        <button id='startGame' onClick={handleClick}>Start Game</button>
       </div>
     )
 }

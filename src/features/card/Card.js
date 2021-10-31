@@ -8,14 +8,18 @@ export const Card = (props) => {
   const cardIndex = props.currentRound -1;
   const cardValue = cards[cardIndex];
 
+  function handleClick(){
+    props.toggleShowResults();
+  }
 
   return (
     <div className="cardContainer">
-      <button className="Card">
+      <div className="Card">
         <div className="cardValue" >
           <h3>{cardValue}</h3>
         </div>
-      </button>
+      </div>
+      <button onClick={handleClick} > Show results!</button>
     </div>
       
   )
