@@ -1,6 +1,9 @@
 import React from "react";
+import { useEffect } from "react";
 
 export const PlayerSingleData = (props) => {
+
+
 
   const isShotgunValue = () => {
     if(props.player.isShotgun === true){
@@ -13,7 +16,7 @@ export const PlayerSingleData = (props) => {
   const showGuesses = (
     <ul>
       {props.player.guesses.map(guess => {
-        return <li>{guess}</li>
+        return <li key={props.player.id}> Guess {props.player.guesses.indexOf(guess)+1} = {guess}</li>
       })}
 
 
@@ -25,7 +28,7 @@ export const PlayerSingleData = (props) => {
         <p>Player ID: {props.player.id}</p>
         <p>Player Name: {props.player.name}</p>
         {/* {props.player.guesses.map(guess => {
-          return <p>{guess}</p>
+          return <p>guess nr {props.player.guesses.indexOf(guess)+1}: {guess}</p>
         })} */}
         <div><p>guesses:</p> {showGuesses}</div>
         <p>Score: {props.player.currentScore}</p>

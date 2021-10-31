@@ -3,16 +3,17 @@ import React from "react";
 export const ReadyNextPlayerPrompt = (props) => {
 
 function handleClick(){
-props.playerReadyToGuess();
+  props.toggleNextPlayerPrompt();
+
 }
 
 
   return (
     <div className="ReadyNextPlayerPrompt">
       
-      <p> {props.player.name}, are you ready to guess ? </p>
+      <h3> {props.player.name},<br /> are you ready to guess? </h3>
     
-      <button onClick={handleClick()} >I'm ready!</button>
+      <button onClick={handleClick} >I'm ready!</button>
       
     </div>
   )

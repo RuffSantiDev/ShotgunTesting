@@ -14,34 +14,43 @@ import '../../UI/css/Game.css';
 
 // Game class contains everything concerning the running game itself.
 export const Game = () => {
+
+
   const dispatch = useDispatch();
   
-  const gameState = useSelector((state) => state.game.gameState);
+  const gameActive = useSelector((state) => state.game.gameActive);
   const numberOfPlayers = useSelector((state) => state.game.numberOfPlayers);
   const players = useSelector ((state) => state.game.players);
   const currentRound = useSelector((state) => state.game.currentRound);
+  const currentPlayerIndex = useSelector((state) => state.game.currentPlayerIndex);
 
- 
+  // for testing
+  useEffect(() => {
+    verifyData()
+  }, [currentPlayerIndex]);
 
-  const startScreen = (
-      <StartScreen 
-          // setNrOfPlayers={dispatch(setNrOfPlayers)}
-          // numberOfPlayers={numberOfPlayers}
-          // activateGame={dispatch(activateGame)}
-          // players={players}
-          // createPlayers={dispatch(createPlayers)}
-          />   
-    );
+  function renderStartScreen(){
+    if(gameActive === false){
+      return <StartScreen />
+    }
+  }
 
-    const footer = (
-      <Standings players={players} />
-    );
+  function renderStandings(){
+    if(gameActive === true){
+      return <Standings players={players} />
+    }
+  }
 
-    const displayRound = (
-      <Round round={currentRound} numberOfPlayers={numberOfPlayers} players={players}/>
-    );
+  function renderRound(){
+    if(gameActive === true && currentRound > 0){
+      return  <Round round={currentRound} numberOfPlayers={numberOfPlayers} players={players}/>
+    }
+  }
+
+
     
     function verifyData(){
+      // console.log("updated verify Data");
       return <div>
       <ShowPlayerData />
       </div>
@@ -51,12 +60,11 @@ export const Game = () => {
 
     return (
       <div className="game">
-        {gameState === false ? startScreen : <p></p> }
+        {renderStartScreen()}
 
-        {(currentRound > 0 && gameState === true) ? displayRound : <p></p>}
-      
-
-        {gameState === true ? footer : <p></p>}
+        {renderRound()}
+        {renderStandings()}
+        {/* for testing */}
         {verifyData()}
       </div>
     )

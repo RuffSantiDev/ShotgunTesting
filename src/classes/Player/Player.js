@@ -17,7 +17,7 @@ class Player {
     this._isShotgun = false;
     this._multipliers = [];
     this._currentMultiplier = 1;
-    this._currentRound = 0;
+    this._currentRound = 1;
   }
   
 
@@ -103,6 +103,7 @@ class Player {
   addGuess(guess){
     this._guesses.push(guess);
     this._currentTurn++;
+
   }
 
   addIndividualPoints(points){
@@ -111,6 +112,7 @@ class Player {
 
   addMultiplier(multiplier){
     this._multipliers.push(multiplier);
+    this._currentMultiplier = multiplier;
   }
 
   addWasRight(individualResults){
@@ -125,15 +127,15 @@ class Player {
     const currentCard = cards[index];
     let result;
     if(currentGuess === 'even' || currentGuess === 'uneven') {
-      if(currentGuess === 'even' && currentCard % 2 == 0 ){
+      if(currentGuess === 'even' && currentCard % 2 === 0 ){
         // guess is even and current card is even -> player was right
         return 1;
-        } else if (currentGuess === 'even' && currentCard % 2 == 1){
+        } else if (currentGuess === 'even' && currentCard % 2 === 1){
           // guess is even and card is uneven -> player was wrong
           return  0;
-        } else if (currentGuess === 'uneven' && currentCard % 2 == 1) {
+        } else if (currentGuess === 'uneven' && currentCard % 2 === 1) {
           return 1;
-        } else if (currentGuess === 'uneven' && currentCard % 2 == 0){
+        } else if (currentGuess === 'uneven' && currentCard % 2 === 0){
           return 0;
         } else {
           return 'error';
@@ -182,7 +184,15 @@ class Player {
       }
     }
     
-
+    // this method should create the player result after each round -> not working yet
+    createRoundResult(cards){
+      const currentRoundPoints = this.determineCurrentRoundPoints(cards);
+      this.addIndividualPoints(currentRoundPoints);
+      const currentMultiplier = this.determineCurrentMultiplier();
+      this.addMultiplier(currentMultiplier);
+      let score = this.calculateScore;
+      this.updateScore(score);
+    }
 
   
 

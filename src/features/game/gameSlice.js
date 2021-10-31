@@ -10,10 +10,11 @@ const player02 = new Player ('Player 02', 'Enter Player Name');
 export const gameSlice = createSlice({
   name: 'game',
   initialState: {
-    gameState: false,
+    gameActive: false,
     numberOfPlayers: 2,
     currentRound: 0,
     roundMax: 16,
+    currentPlayerIndex: 0,
     // player objects need to be stored as serialized values for web transmission -> getPlayers & updatePlayers
     // JSON.stringify to serialize
     // JSON.parse to deserialize
@@ -22,14 +23,18 @@ export const gameSlice = createSlice({
   },
   reducers: {
     activateGame: (state) => {
-      state.gameState = true;
+      state.gameActive = true;
     },
     deactivateGame: (state) => {
-      state.gameState = false;
+      state.gameActive = false;
     },
     setNrOfPlayers: (state, action) => {
       state.numberOfPlayers = action.payload;
     },
+    updateCurrentPlayerIndex: (state, action) => {
+      state.currentPlayerIndex = action.payload;
+    },
+
     // METHODS TO GET AND UPDATE DE-/SERIALIZED PLAYER OBJECT
     getPlayers: (state) =>{
       const players = state.players;
@@ -71,9 +76,16 @@ export const gameSlice = createSlice({
          state.currentRound += 1;
         };
       },
+
+      // this method should call the create round result from Player object after each round -> not working yet
+    updatePlayerScores: (state) => {
+      state.players.forEach(player => {
+        player.createRoundResult(state.cards);
+      })
+    }
   },
 })
 
-export const { activateGame, deactivateGame, setNrOfPlayers, getPlayers, updatePlayers, createPlayers, updatePlayerName, randomizeCards, toggleNextRound } = gameSlice.actions;
+export const { activateGame, deactivateGame, setNrOfPlayers, getPlayers, updatePlayers, createPlayers, updatePlayerName, randomizeCards, toggleNextRound, updateCurrentPlayerIndex } = gameSlice.actions;
 
 export default gameSlice.reducer;
