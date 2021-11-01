@@ -1,0 +1,28 @@
+.Results{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  /* justify-content: center; */
+}
+
+.IndividualResults {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ margin: 10px;
+}
+
+.name {
+  font-size: 20px;
+}
+
+.points {
+  font-size: 30px;
+  color: #DFB678;
+}
+
+.drinks {
+  font-size: 30px;
+  color: #DFB678;
+}
+

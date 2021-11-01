@@ -7,12 +7,12 @@ import { EnterGuess } from "./Parts/EnterGuess";
 import { Card } from "../../../../features/card/Card";
 import { DrawCardPrompt } from "./Card/DrawCardPrompt";
 import { ReadyNextPlayerPrompt } from "./Parts/ReadyNextPlayerPrompt";
-import { Results } from "../../../../features/Results/Results";
+import { Results } from "./Results/Results";
 
 import './Round.css'
 
 // import game actions
-import { updateCurrentPlayerIndex, calculatePlayerResults } from "../../../../features/game/gameSlice";
+import { updateCurrentPlayerIndex, calculatePlayerResults, calculateDrinkUnits, toggleNextRound, resetCurrentPlayerIndex } from "../../../../features/game/gameSlice";
 // import { Results } from "../../../../features/Results/Results";
 
 // Round contains everything that is needed for every Round.
@@ -30,8 +30,9 @@ export const Round = () => {
   const currentRound = Number(useSelector((state) => state.game.currentRound));
   const numberOfPlayers = Number(useSelector((state) => state.game.numberOfPlayers));
   const currentPlayerIndex = Number(useSelector((state) => state.game.currentPlayerIndex));
-  const [showEnterGuessPrompt, setShowEnterGuessPrompt] = useState(false);
   const [showNextPlayerPrompt, setShowNextPlayerPrompt] = useState(true);
+  const [showEnterGuessPrompt, setShowEnterGuessPrompt] = useState(false);
+  const [showDrawCardPrompt, setShowDrawCardPrompt] = useState(false);
   const [showCard, setShowCard] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [roundActive, setRoundActive] = useState(true);
@@ -50,10 +51,15 @@ export const Round = () => {
     renderDrawCardPrompt();
     renderCard();
     renderResults();
-  }, [currentPlayerIndex, showCard, showNextPlayerPrompt, showEnterGuessPrompt]);
+  }, [currentPlayerIndex, showCard, showNextPlayerPrompt, showEnterGuessPrompt, showResults]);
 
 
-
+  function renderNextPlayerPrompt(){
+    if(showNextPlayerPrompt===true && currentPlayerIndex < numberOfPlayers){
+      let currentPlayer = players[currentPlayerIndex];
+      return <ReadyNextPlayerPrompt player={currentPlayer} toggleNextPlayerPrompt={toggleNextPlayerPrompt} />      
+    }
+  }
 
   function renderEnterGuessPrompt(){
     while(showEnterGuessPrompt === true && currentPlayerIndex < numberOfPlayers) {
@@ -77,29 +83,29 @@ export const Round = () => {
       if(showEnterGuessPrompt === true && showNextPlayerPrompt === false){
         setShowEnterGuessPrompt(false);
       setShowNextPlayerPrompt(true);  
+      setShowDrawCardPrompt(true);
       } else if(showEnterGuessPrompt === false && showNextPlayerPrompt === true){
         setShowEnterGuessPrompt(true);
         setShowNextPlayerPrompt(false);
-      } 
-    } 
+        setShowDrawCardPrompt(true);
+      }
+    } else {
+      setShowDrawCardPrompt(true);
+    }
   }
 
 
   
-    function renderNextPlayerPrompt(){
-      if(showNextPlayerPrompt===true && currentPlayerIndex < numberOfPlayers){
-        let currentPlayer = players[currentPlayerIndex];
-        return <ReadyNextPlayerPrompt player={currentPlayer} toggleNextPlayerPrompt={toggleNextPlayerPrompt} />      
-      }
-    }
+
 
     function drawCard(){
       // console.log('drawing card');
       setShowCard(true);
+      setShowDrawCardPrompt(false);
     }
 
   function renderDrawCardPrompt(){
-    if(currentPlayerIndex === numberOfPlayers && showCard === false){
+    if(showDrawCardPrompt === true && currentPlayerIndex === numberOfPlayers){
       return <DrawCardPrompt drawCard={drawCard}  />
     }
   }
@@ -112,12 +118,23 @@ export const Round = () => {
 
   function toggleShowResults(){
     dispatch(calculatePlayerResults());
+    dispatch(calculateDrinkUnits());
+    setShowResults(true);
+    setShowCard(false);
+    console.log('show results: ' + showResults);
+  }
+
+  function startNextRound(){
+    setShowResults(false);
+    dispatch(toggleNextRound());
+    dispatch(resetCurrentPlayerIndex());
+    setShowNextPlayerPrompt(true);
   }
 
   function renderResults(){
-    // if(showResults === true){
-      return <Results />
-    // }
+    if(showResults === true){
+      return <Results startNextRound={startNextRound} />
+    }
   }
 
   
@@ -125,11 +142,20 @@ export const Round = () => {
   return(
     <div className="Round" >
       <h2> Round {currentRound} </h2>
-      {/* {currentPlayerIndex}
-      <br/> 
-      {"showCard: " + showCard}
-      <br/> 
-      {"Number of Players: " + numberOfPlayers} */}
+      {/* {'current player index: ' + currentPlayerIndex}
+      <br/>
+      {'numberOfPlayers '+ numberOfPlayers}
+      <br/>
+      {'showNextPlayerPrompt ' + showNextPlayerPrompt}
+      <br/>
+{'showEnterGuessPrompt ' + showEnterGuessPrompt}
+<br/>
+{'showDrawCardPrompt ' + showDrawCardPrompt}
+<br/>
+{'showCard ' + showCard}
+<br/>
+{'showResults ' + showResults}
+<br/> */}
       {renderNextPlayerPrompt()}
       {renderEnterGuessPrompt()}
       {renderDrawCardPrompt()}

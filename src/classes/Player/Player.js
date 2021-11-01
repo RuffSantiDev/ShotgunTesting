@@ -8,12 +8,13 @@ class Player {
     this._guesses = [];
     this._currentGuess = null;
     this._individualPoints = [];
-    this._currentPoints = null;
+    this._currentPoints = 0;
     this._currentScore = 0;
     this._currentTurn = 0;
     //results are the multiplied points 
     this._individualResults = [];
-    this._currentResult = null;
+    this._currentResult = 0;
+    this._drinkUnits = 0;
     this._isShotgun = false;
     this._multipliers = [];
     this._currentMultiplier = 1;
@@ -51,6 +52,9 @@ class Player {
   }
   get currentResult(){
     return this._currentResult;
+  }
+  get drinkUnits(){
+    return this._drinkUnits;
   }
   get isShotgun(){
     return this._isShotgun;
@@ -116,7 +120,9 @@ class Player {
     this._currentGuess = guess;
     this._currentTurn++;
   }
-
+  setDrinkUnits(drinkUnits){
+    this._drinkUnits = drinkUnits;
+  }
 
 
   // not used should be deleted
@@ -193,7 +199,9 @@ class Player {
     const currentScore = this.currentScore;
     const currentPoints = this.individualPoints[index];
     const currentMultiplier = this.currentMultiplier;
-    const newScore = currentScore + (currentPoints * currentMultiplier);
+    const currentResult = currentPoints * currentMultiplier;
+    this._currentResult = currentResult;
+    const newScore = currentScore + currentResult;
     return newScore;
   }
   

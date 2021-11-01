@@ -34,6 +34,9 @@ export const gameSlice = createSlice({
     updateCurrentPlayerIndex: (state, action) => {
       state.currentPlayerIndex = action.payload;
     },
+    resetCurrentPlayerIndex: (state) => {
+      state.currentPlayerIndex = 0;
+    },
 
     // METHODS TO GET AND UPDATE DE-/SERIALIZED PLAYER OBJECT
     getPlayers: (state) =>{
@@ -78,15 +81,29 @@ export const gameSlice = createSlice({
 
       // this method should call the create round result from Player object after each round -> not working yet
     calculatePlayerResults: (state) => {
-      console.log('calculate player results called');
       state.players.forEach(player => {
         player.createRoundResult(state.cards);
       })
       console.log(state.players[0]);
-    }
+    },
+    calculateDrinkUnits: (state) => {
+      let overallDrinkUnits = 0;
+      state.players.forEach(player => {
+        overallDrinkUnits += player.currentResult;
+        console.log('player current result' + player.currentResult);
+      });
+      state.players.forEach(player => {
+        let individualDrinkUnits = overallDrinkUnits - player.currentResult;
+        player.setDrinkUnits(individualDrinkUnits);
+      });
+      console.log('Drink units have been set!');
+      console.log(overallDrinkUnits);
+
+    },
+
   },
 })
 
-export const { activateGame, deactivateGame, setNrOfPlayers, updateCurrentPlayerIndex, getPlayers, updatePlayers, createPlayers, updatePlayerName, randomizeCards, toggleNextRound, calculatePlayerResults} = gameSlice.actions;
+export const { activateGame, deactivateGame, setNrOfPlayers, updateCurrentPlayerIndex, resetCurrentPlayerIndex, getPlayers, updatePlayers, createPlayers, updatePlayerName, randomizeCards, toggleNextRound, calculatePlayerResults, calculateDrinkUnits} = gameSlice.actions;
 
 export default gameSlice.reducer;

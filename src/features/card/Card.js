@@ -19,7 +19,10 @@ export const Card = (props) => {
           <h3>{cardValue}</h3>
         </div>
       </div>
+      <div>
       <button onClick={handleClick} > Show results!</button>
+      </div>
+      
     </div>
       
   )

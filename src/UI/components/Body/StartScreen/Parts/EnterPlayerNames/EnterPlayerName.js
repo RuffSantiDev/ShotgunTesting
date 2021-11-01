@@ -12,7 +12,7 @@ export const EnterPlayerName = (props) => {
  // needs input verification for security shit
 
     return (
-      <div className="EnterPlayerName">
+      <div className="EnterPlayerNameItem">
         <label >{props.player.id}: </label>
         
         <input
@@ -21,7 +21,7 @@ export const EnterPlayerName = (props) => {
           id={props.player.id}
           type="text"
           name={props.player.id}
-          placeholder='Enter Player name' />
+          placeholder='Enter Player Name' />
       </div>
     )
 

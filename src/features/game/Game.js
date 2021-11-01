@@ -26,8 +26,12 @@ export const Game = () => {
 
   // for testing
   useEffect(() => {
-    verifyData()
+    verifyData();
   }, [currentPlayerIndex]);
+
+  useEffect(() => {
+    renderStandings();
+  }, [currentRound]);
 
   function renderStartScreen(){
     if(gameActive === false){

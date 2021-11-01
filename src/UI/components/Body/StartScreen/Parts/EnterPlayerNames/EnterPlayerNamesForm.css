@@ -1,4 +1,17 @@
-.EnterPlayerName {
+.EnterPlayerNameForm {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.EnterPlayerNameItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
   margin: 10px;
-  display: inline-block;
+}
+
+input {
+  max-width: 50%;
 }

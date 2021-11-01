@@ -14,12 +14,10 @@ export const EnterPlayerNamesForm = () => {
 
     return (
       <div>
-        <form>
           <h3>Enter player names:</h3>
           {players.map(player => {
-            return <EnterPlayerName className="EnterPlayerName" key={player.id} player={player} name={player.name} />
+            return <EnterPlayerName className="EnterPlayerNameItem" key={player.id} player={player} name={player.name} />
           })}
-        </form>
       </div>
     )
   
