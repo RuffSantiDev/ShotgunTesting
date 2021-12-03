@@ -2,13 +2,11 @@ import React from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { useState, useEffect } from "react";
 
-import { activateGame, deactivateGame, setNrOfPlayers, createPlayers, toggleNextRound } from "./gameSlice";
-
 import { StartScreen } from "../../UI/components/Body/StartScreen/StartScreen";
 import { Standings } from "../../UI/components/Footer/Standings/Standings";
 import { Round } from "../../UI/components/Body/Rounds/Round";
 import { ShowPlayerData } from "../../UI/components/Testing/ShowPlayerData";
-
+import { FinalResults } from "../../UI/components/Body/Rounds/Results/FinalResults";
 import '../../UI/css/Game.css';
 
 
@@ -22,7 +20,12 @@ export const Game = () => {
   const numberOfPlayers = useSelector((state) => state.game.numberOfPlayers);
   const players = useSelector ((state) => state.game.players);
   const currentRound = useSelector((state) => state.game.currentRound);
+  const roundMax = useSelector(state => state.game.roundMax);
   const currentPlayerIndex = useSelector((state) => state.game.currentPlayerIndex);
+  const winnerByScore = useSelector((state) => state.game.winnerByScore);
+  const highestScore = useSelector((state) => state.game.highestScore);
+  const winnerByDrinks = useSelector((state) => state.game.winnerByDrinks);
+  const mostDrinks = useSelector((state) => state.game.mostDrinks);
 
   // for testing
   useEffect(() => {
@@ -46,9 +49,16 @@ export const Game = () => {
   }
 
   function renderRound(){
-    if(gameActive === true && currentRound > 0){
+    if(gameActive === true && currentRound <= roundMax){
       return  <Round round={currentRound} numberOfPlayers={numberOfPlayers} players={players}/>
     }
+  }
+
+  function renderFinalResult(){
+    if (gameActive === false && currentRound === roundMax){
+      return <FinalResults winnerByDrinks={winnerByDrinks} mostDrinks={mostDrinks} winnerByScore={winnerByScore} highestScore={highestScore} />
+    }
+    // return <FinalResults winnerByDrinks={winnerByDrinks} mostDrinks={mostDrinks} winnerByScore={winnerByScore} highestScore={highestScore} />
   }
 
 
@@ -65,8 +75,8 @@ export const Game = () => {
     return (
       <div className="game">
         {renderStartScreen()}
-
         {renderRound()}
+        {renderFinalResult()}
         {renderStandings()}
         {/* for testing */}
         {verifyData()}

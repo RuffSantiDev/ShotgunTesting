@@ -5,8 +5,13 @@
 }
 
 .PlayerInfo {
+
+
   padding: 2.5%;
   color: aqua;
   display: inline-block;
+  /* flex-direction: row; */
+  /* justify-content: center; */
+  /* align-items: center; */
   margin: 2.5%; 
 }

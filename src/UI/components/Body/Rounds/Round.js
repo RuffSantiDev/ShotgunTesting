@@ -2,17 +2,15 @@ import React from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { useState, useEffect } from "react";
 
-
 import { EnterGuess } from "./Parts/EnterGuess";
 import { Card } from "../../../../features/card/Card";
 import { DrawCardPrompt } from "./Card/DrawCardPrompt";
 import { ReadyNextPlayerPrompt } from "./Parts/ReadyNextPlayerPrompt";
 import { Results } from "./Results/Results";
-
 import './Round.css'
 
 // import game actions
-import { updateCurrentPlayerIndex, calculatePlayerResults, calculateDrinkUnits, toggleNextRound, resetCurrentPlayerIndex } from "../../../../features/game/gameSlice";
+import { updateCurrentPlayerIndex, calculatePlayerResults, calculateDrinkUnits, toggleNextRound, resetCurrentPlayerIndex, determineWinnerByScore, determineWinnerByDrinks, deactivateGame } from "../../../../features/game/gameSlice";
 // import { Results } from "../../../../features/Results/Results";
 
 // Round contains everything that is needed for every Round.
@@ -24,10 +22,10 @@ import { updateCurrentPlayerIndex, calculatePlayerResults, calculateDrinkUnits, 
 export const Round = () => {
   const dispatch = useDispatch();
 
-
   const players = useSelector(state => state.game.players);
   const cards = useSelector(state => state.game.cards);
   const currentRound = Number(useSelector((state) => state.game.currentRound));
+  const roundMax = useSelector(state => state.game.roundMax);
   const numberOfPlayers = Number(useSelector((state) => state.game.numberOfPlayers));
   const currentPlayerIndex = Number(useSelector((state) => state.game.currentPlayerIndex));
   const [showNextPlayerPrompt, setShowNextPlayerPrompt] = useState(true);
@@ -36,6 +34,7 @@ export const Round = () => {
   const [showCard, setShowCard] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [roundActive, setRoundActive] = useState(true);
+  
 
   // useEffect(() => {
   //   renderEnterGuessPrompt();
@@ -133,29 +132,29 @@ export const Round = () => {
 
   function renderResults(){
     if(showResults === true){
-      return <Results startNextRound={startNextRound} />
+      return <Results startNextRound={startNextRound} showFinalResults={showFinalResults} />
     }
   }
 
-  
+  function showFinalResults(){
+    dispatch(determineWinnerByScore());
+    dispatch(determineWinnerByDrinks());
+    dispatch(deactivateGame());
+  }
+
+
+  function renderRoundLabel(){
+    if (currentRound === roundMax){
+      return <h2> Final Round! </h2>
+    }
+    else {
+      return <h2> Round {currentRound} </h2>
+    }
+  }
     
   return(
     <div className="Round" >
-      <h2> Round {currentRound} </h2>
-      {/* {'current player index: ' + currentPlayerIndex}
-      <br/>
-      {'numberOfPlayers '+ numberOfPlayers}
-      <br/>
-      {'showNextPlayerPrompt ' + showNextPlayerPrompt}
-      <br/>
-{'showEnterGuessPrompt ' + showEnterGuessPrompt}
-<br/>
-{'showDrawCardPrompt ' + showDrawCardPrompt}
-<br/>
-{'showCard ' + showCard}
-<br/>
-{'showResults ' + showResults}
-<br/> */}
+      {renderRoundLabel()}
       {renderNextPlayerPrompt()}
       {renderEnterGuessPrompt()}
       {renderDrawCardPrompt()}

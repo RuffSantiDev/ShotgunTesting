@@ -11,7 +11,7 @@ const player02 = new Player ('Player 02', 'John');
 
 
 
-player01.setIndividualPoints(player01Points);
+player01.individualPoints = player01Points;
 
 console.log('Individual Points: ' + player01.individualPoints);
 

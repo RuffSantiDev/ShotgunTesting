@@ -7,10 +7,27 @@
 
 .IndividualResults {
  display: flex;
+ flex-direction: row;
  justify-content: center;
  align-items: center;
  margin: 10px;
 }
+
+.multiplier{
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.PlayerFinalResults{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
 
 .name {
   font-size: 20px;
@@ -19,6 +36,7 @@
 .points {
   font-size: 30px;
   color: #DFB678;
+  margin: 10px;
 }
 
 .drinks {

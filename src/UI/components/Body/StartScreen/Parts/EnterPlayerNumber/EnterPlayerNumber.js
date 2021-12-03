@@ -12,7 +12,7 @@ export const EnterPlayerNumber = () => {
   const numberOfPlayers = useSelector(state => state.game.numberOfPlayers);
     
   function handleSliderChange(e) {
-    const playerCount = e.target.value;
+    const playerCount = parseInt(e.target.value);
     dispatch(setNrOfPlayers(playerCount));
     dispatch(createPlayers());
       }

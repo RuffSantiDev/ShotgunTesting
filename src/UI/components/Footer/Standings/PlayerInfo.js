@@ -4,7 +4,8 @@ export const PlayerInfo = (props) => {
 
     return (
       <div className="PlayerInfo">
-        <p>{props.player.name}: {props.player.currentScore}</p>
+        <h5>{props.player.name}:</h5>
+        <h4>{props.player.currentScore}</h4>
       </div>
     )
 }

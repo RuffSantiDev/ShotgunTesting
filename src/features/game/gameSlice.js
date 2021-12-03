@@ -13,13 +13,18 @@ export const gameSlice = createSlice({
     gameActive: false,
     numberOfPlayers: 2,
     currentRound: 0,
-    roundMax: 16,
+    // roundMax should be 16 -> roundMax = 2 for testing
+    roundMax: 5,
     currentPlayerIndex: 0,
     // player objects need to be stored as serialized values for web transmission -> getPlayers & updatePlayers
     // JSON.stringify to serialize
     // JSON.parse to deserialize
     players: [player01, player02],
     cards: [1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4],
+    winnerByScore: 'not set yet',
+    highestScore: 0,
+    winnerByDrinks: 'not set yet',
+    mostDrinks: 0,
   },
   reducers: {
     activateGame: (state) => {
@@ -82,6 +87,7 @@ export const gameSlice = createSlice({
       // this method should call the create round result from Player object after each round -> not working yet
     calculatePlayerResults: (state) => {
       state.players.forEach(player => {
+        player.setCurrentRound = state.currentRound;
         player.createRoundResult(state.cards);
       })
       console.log(state.players[0]);
@@ -90,20 +96,51 @@ export const gameSlice = createSlice({
       let overallDrinkUnits = 0;
       state.players.forEach(player => {
         overallDrinkUnits += player.currentResult;
-        console.log('player current result' + player.currentResult);
+        // console.log('player current result' + player.currentResult);
       });
       state.players.forEach(player => {
         let individualDrinkUnits = overallDrinkUnits - player.currentResult;
         player.setDrinkUnits(individualDrinkUnits);
       });
-      console.log('Drink units have been set!');
-      console.log(overallDrinkUnits);
-
+      // console.log('Drink units have been set!');
+      // console.log(overallDrinkUnits);
     },
+    
+    determineWinnerByScore: (state) => {
+      let currentMax = 0;
+      let currentWinner = 'none';
+      let playerScore = 0;
+      state.players.forEach(player => {
+        playerScore = player.currentScore;
+        if (playerScore > currentMax) {
+          currentMax = playerScore;
+          currentWinner = player.name;
+        }
+      })
+      state.winnerByScore = currentWinner;
+      state.highestScore = currentMax;
+    },
+    determineWinnerByDrinks: (state) => {
+      let currentMax = 0;
+      let currentWinner = 'none';
+      let numberOfDrinks = 0;
+      state.players.forEach(player => {
+        numberOfDrinks = player.sumOfDrinkUnits;
+        if (numberOfDrinks > currentMax) {
+          currentMax = numberOfDrinks;
+          currentWinner = player.name;
+        }
+      })
+      state.winnerByDrinks = currentWinner;
+      state.mostDrinks = currentMax;
+    },
+    resetGame: (state) => {
+
+    }
 
   },
 })
 
-export const { activateGame, deactivateGame, setNrOfPlayers, updateCurrentPlayerIndex, resetCurrentPlayerIndex, getPlayers, updatePlayers, createPlayers, updatePlayerName, randomizeCards, toggleNextRound, calculatePlayerResults, calculateDrinkUnits} = gameSlice.actions;
+export const { activateGame, deactivateGame, setNrOfPlayers, updateCurrentPlayerIndex, resetCurrentPlayerIndex, getPlayers, updatePlayers, createPlayers, updatePlayerName, randomizeCards, toggleNextRound, calculatePlayerResults, calculateDrinkUnits, determineWinnerByScore, determineWinnerByDrinks} = gameSlice.actions;
 
 export default gameSlice.reducer;

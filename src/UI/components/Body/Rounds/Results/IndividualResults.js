@@ -17,17 +17,31 @@ function renderButton(){
   }
 }
 
+function renderMultiplier(){
+  if(props.player.currentMultiplier > 1){
+    return (
+      <div className="multiplier">
+        <p>x{props.player.currentMultiplier}</p>
+        <p className="points">{props.player.currentResult}</p>
+      </div>
+    )
+  }
+}
+
+function renderDrinks(){
+
+}
+
     return (
       <div className="IndividualResults">
-  
           <p className="name">{props.player.name}: </p>
+          <p>Points:</p>
           <p className="points">{props.player.currentPoints}</p>
-          <p> points </p>
+          {renderMultiplier()}    
           <p>|</p>
-        <p>DRINK: </p>
-        <p className="drinks">{props.player.drinkUnits}</p>
-
-       {renderButton()}
+          <p>DRINK</p>
+          <p className="drinks">{props.player.currentDrinkUnits}</p>
+          {renderButton()}
       </div>
     )
 }

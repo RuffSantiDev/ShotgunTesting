@@ -14,7 +14,9 @@ class Player {
     //results are the multiplied points 
     this._individualResults = [];
     this._currentResult = 0;
-    this._drinkUnits = 0;
+    this._individualDrinkUnits = [];
+    this._currentDrinkUnits = 0;
+    this._sumOfDrinkUnits = 0;
     this._isShotgun = false;
     this._multipliers = [];
     this._currentMultiplier = 1;
@@ -53,8 +55,14 @@ class Player {
   get currentResult(){
     return this._currentResult;
   }
-  get drinkUnits(){
-    return this._drinkUnits;
+  get individualDrinkUnits(){
+    return this._individualDrinkUnits;
+  }
+  get currentDrinkUnits(){
+    return this._currentDrinkUnits;
+  }
+  get sumOfDrinkUnits(){
+    return this._sumOfDrinkUnits;
   }
   get isShotgun(){
     return this._isShotgun;
@@ -120,10 +128,18 @@ class Player {
     this._currentGuess = guess;
     this._currentTurn++;
   }
-  setDrinkUnits(drinkUnits){
-    this._drinkUnits = drinkUnits;
+  setDrinkUnits(currentDrinkUnits){
+    this._currentDrinkUnits = currentDrinkUnits;
+    this._individualDrinkUnits.push(currentDrinkUnits)
+    let sum = this.sumUpDrinkUnits();
+    this._sumOfDrinkUnits = sum;
   }
 
+  sumUpDrinkUnits(){
+    const reducer = (preVal, currentVal) => preVal + currentVal;
+    let sum = this._individualDrinkUnits.reduce(reducer);
+    return sum
+  }
 
   // not used should be deleted
   // addWasRight(individualResults){
@@ -133,32 +149,35 @@ class Player {
 
   // calculates points for current round
   determineCurrentRoundPoints(cards){
-    const index = this.currentRound -1;
+    const index = this.currentTurn -1;
     const currentGuess = this._guesses[index];
     const currentCard = cards[index];
-    let result;
+    let result = 0;
     if(currentGuess === 'even' || currentGuess === 'uneven') {
-      if(currentGuess === 'even' && currentCard % 2 === 0 ){
+      if(currentGuess === 'even' && currentCard % 2 == 0 ){
         // guess is even and current card is even -> player was right
-        return 1;
-        } else if (currentGuess === 'even' && currentCard % 2 === 1){
+        result = 1;
+        } else if (currentGuess === 'even' && currentCard % 2 == 1){
           // guess is even and card is uneven -> player was wrong
-          return  0;
-        } else if (currentGuess === 'uneven' && currentCard % 2 === 1) {
-          return 1;
-        } else if (currentGuess === 'uneven' && currentCard % 2 === 0){
-          return 0;
+          result =  0;
+        } else if (currentGuess === 'uneven' && currentCard % 2 == 1) {
+          result = 1;
+        } else if (currentGuess === 'uneven' && currentCard % 2 == 0){
+          result = 0;
         } else {
-          return 'error';
+          result = 'error';
         } 
       } else {
         const currentGuessNr = Number(currentGuess);
         if (currentGuessNr === currentCard) {
-          return 2;
+          result = 2;
         } else {
-          return 0;
+          result = 0;
         }
       }
+      this._individualPoints.push(result);
+      this._currentPoints = result;
+      return result;
     };
 
     
@@ -175,17 +194,27 @@ class Player {
     // }
 
   determineCurrentMultiplier(){
-    let currentIndex = this.currentRound -1;
-    let prevIndex = currentIndex -1;
+    let currentIndex = this.currentTurn -1;
+    let pointArray = this.individualPoints;
+    let currentPoints = pointArray[currentIndex];
     let multiplier = 1;
-    const pointArray = this.individualPoints;
-    if(pointArray[currentIndex] >= 1) {
-      while(pointArray[prevIndex] >= 1 ){
-        prevIndex--;
-        multiplier++;
+    if(currentPoints > 0){
+      let prevIndex = currentIndex -1;
+      let prevPoints = pointArray[prevIndex];
+      if(prevIndex >= 0){
+        while(prevPoints > 0 && prevIndex >= 0) {
+          multiplier++;
+          prevIndex--;
+          prevPoints = pointArray[prevIndex];
+        }
       }
+    } else {
+      multiplier = 1;
     }
+    this._multipliers.push(multiplier);
+    this._currentMultiplier = multiplier;
       return multiplier;
+
   }
 
     
@@ -195,12 +224,13 @@ class Player {
   }
 
   calculateScore(){
-    const index = this.currentRound -1;
+    const index = this.currentTurn -1;
     const currentScore = this.currentScore;
     const currentPoints = this.individualPoints[index];
     const currentMultiplier = this.currentMultiplier;
     const currentResult = currentPoints * currentMultiplier;
     this._currentResult = currentResult;
+    this._individualResults.push(currentResult);
     const newScore = currentScore + currentResult;
     return newScore;
   }
@@ -208,6 +238,7 @@ class Player {
   //recalculates the user currentScore from the individual points
   updateScore(score){
     this._currentScore = score;
+    
   }
   // replace with get current multiplier
   // getCurrentMultiplier(){
@@ -218,7 +249,7 @@ class Player {
 
   // Shotgun status is not yet needed
   determineShotgunStatus(){
-    const index = this.currentRound -1;
+    const index = this.currentTurn -1;
     const currentMultiplier = this.getCurrentMultiplier(index);
     if(currentMultiplier >= 3){
       this.isShotgun = true;
@@ -226,19 +257,14 @@ class Player {
   }
     
 
-  // this method should create the player result after each round -> not working yet
+
   createRoundResult(cards){
     const currentRoundPoints = this.determineCurrentRoundPoints(cards);
-    this.addIndividualPoints(currentRoundPoints);
     const currentMultiplier = this.determineCurrentMultiplier();
-    this.addMultiplier(currentMultiplier);
     const newScore = this.calculateScore();
     this.updateScore(newScore);
   }
 
 };
-
-
-// export default Player;
 
 module.exports = Player;

@@ -20,7 +20,7 @@ export const Card = (props) => {
         </div>
       </div>
       <div>
-      <button onClick={handleClick} > Show results!</button>
+      <button onClick={handleClick} > Show round results!</button>
       </div>
       
     </div>
