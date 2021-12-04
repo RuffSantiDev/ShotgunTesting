@@ -1,32 +1,25 @@
 import React from "react";
 import { useSelector, useDispatch } from 'react-redux'
-import { useState, useEffect } from "react";
-
+import { useEffect } from "react";
 import { StartScreen } from "../../UI/components/Body/StartScreen/StartScreen";
 import { Standings } from "../../UI/components/Footer/Standings/Standings";
 import { Round } from "../../UI/components/Body/Rounds/Round";
 import { ShowPlayerData } from "../../UI/components/Testing/ShowPlayerData";
-import { FinalResults } from "../../UI/components/Body/Rounds/Results/FinalResults";
 import '../../UI/css/Game.css';
-
+import { Footer } from "../../UI/components/Footer/Footer";
+import { Info } from "../../UI/components/Body/Info";
 
 // Game class contains everything concerning the running game itself.
 export const Game = () => {
-
-
-  const dispatch = useDispatch();
   
+  // import slice state data
   const gameActive = useSelector((state) => state.game.gameActive);
   const numberOfPlayers = useSelector((state) => state.game.numberOfPlayers);
   const players = useSelector ((state) => state.game.players);
   const currentRound = useSelector((state) => state.game.currentRound);
   const roundMax = useSelector(state => state.game.roundMax);
   const currentPlayerIndex = useSelector((state) => state.game.currentPlayerIndex);
-  const winnerByScore = useSelector((state) => state.game.winnerByScore);
-  const highestScore = useSelector((state) => state.game.highestScore);
-  const winnerByDrinks = useSelector((state) => state.game.winnerByDrinks);
-  const mostDrinks = useSelector((state) => state.game.mostDrinks);
-  const showFinalResults = useSelector((state) => state.game.showFinalResults);
+ 
 
   // for testing
   useEffect(() => {
@@ -37,60 +30,47 @@ export const Game = () => {
     renderStandings();
   }, [currentRound]);
 
+  //start screen allows the player to enter number of players and player names and to start the game
   function renderStartScreen(){
-    if(gameActive === false){
+    // && currentRound === 0
+    if(gameActive === false ){
       return <StartScreen />
     }
   }
 
-  function renderStandings(){
-    if(gameActive === true){
-      return <Standings players={players} />
-    }
-  }
-
+  // renderRound is activated once the game is started
+  // it contains the flow for the round loops up until the final standings
   function renderRound(){
     if(gameActive === true && currentRound <= roundMax){
       return  <Round round={currentRound} numberOfPlayers={numberOfPlayers} players={players}/>
     }
   }
 
-  function renderFinalResult(){
-    if (showFinalResults === true && currentRound === roundMax){
-      return <FinalResults winnerByDrinks={winnerByDrinks} mostDrinks={mostDrinks} winnerByScore={winnerByScore} highestScore={highestScore} startNewGame={startNewGame} />
+  //current standings are rendered on the bottom once the game is active
+  function renderStandings(){
+    if(gameActive === true){
+      return <Standings players={players} />
     }
-    // return <FinalResults winnerByDrinks={winnerByDrinks} mostDrinks={mostDrinks} winnerByScore={winnerByScore} highestScore={highestScore} />
   }
 
-  function startNewGame(){
-    // slice method -> need to create
-    // dispatch(resetGame());
-
+  //shows a set of testing data on the bottom of the page
+  function verifyData(){
+    return <div>
+    <ShowPlayerData />
+    </div>
   }
-
   
-
-
-    
-    function verifyData(){
-      // console.log("updated verify Data");
-      return <div>
-      <ShowPlayerData />
-      </div>
-    }
-    
-
-
-    return (
-      <div className="game">
-        {renderStartScreen()}
-        {renderRound()}
-        {renderFinalResult()}
-        {renderStandings()}
-        {/* for testing */}
-        {verifyData()}
-      </div>
-    )
+  return (
+    <div className="game">
+      {renderStartScreen()}
+      {renderRound()}
+      {renderStandings()}
+      {/* for testing decomment next line*/}
+      {/* {verifyData()} */}
+      <Footer />
+      <Info />
+    </div>
+  )
   
 
 }

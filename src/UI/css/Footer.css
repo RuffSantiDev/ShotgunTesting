@@ -1,0 +1,30 @@
+.Footer{
+  background-color: #465158;
+  border-width: 1px;
+  border-style: solid none none none;
+  border-color: white;
+  min-height: 75px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.Footer p {
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  margin: 5px;
+}
+
+h1 {
+  color: white;
+  font-family: 'Stalinist One', cursive;
+  font-size: 40px;
+  margin: 0px;
+  padding-top: 5%;
+  padding-bottom: 2.5%;
+}
+

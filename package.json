@@ -8,6 +8,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "react": "^17.0.2",
+    "react-collapsible": "^2.8.4",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.5",
     "react-scripts": "4.0.3"
@@ -35,7 +36,9 @@
   },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.",
   "main": "index.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "jest": "^27.4.3"
+  },
   "author": "RS",
   "license": "ISC"
 }

@@ -11,7 +11,7 @@ const initialState = {
   numberOfPlayers: 2,
   currentRound: 0,
   // roundMax should be 16 -> roundMax = 2 for testing
-  roundMax: 1,
+  roundMax: 2,
   currentPlayerIndex: 0,
   // player objects need to be stored as serialized values for web transmission -> getPlayers & updatePlayers
   // JSON.stringify to serialize
@@ -35,8 +35,11 @@ export const gameSlice = createSlice({
       state.gameActive = false;
     },
     resetGame: (state) => {
+      console.log('game will be reset')
+      // quick fix -> reload browser page
+      window.location.reload(false);
+      // once the state is stored in the cache, the cache needs to be cleared as well
 
-      // local browser storage needs to be cleared (pending implementation)
     },
     setNrOfPlayers: (state, action) => {
       state.numberOfPlayers = action.payload;
@@ -140,13 +143,9 @@ export const gameSlice = createSlice({
       state.winnerByDrinks = currentWinner;
       state.mostDrinks = currentMax;
     },
-    resetGame: (state) => {
-
-    }
-
   },
 })
 
-export const { activateGame, deactivateGame, setNrOfPlayers, updateCurrentPlayerIndex, resetCurrentPlayerIndex, getPlayers, updatePlayers, createPlayers, updatePlayerName, randomizeCards, toggleNextRound, calculatePlayerResults, calculateDrinkUnits, determineWinnerByScore, determineWinnerByDrinks} = gameSlice.actions;
+export const { activateGame, deactivateGame, setNrOfPlayers, updateCurrentPlayerIndex, resetCurrentPlayerIndex, getPlayers, updatePlayers, createPlayers, updatePlayerName, randomizeCards, toggleNextRound, calculatePlayerResults, calculateDrinkUnits, determineWinnerByScore, determineWinnerByDrinks, resetGame} = gameSlice.actions;
 
 export default gameSlice.reducer;

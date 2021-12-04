@@ -1,15 +1,36 @@
 .Header{
   background-color: #0C4063;
   min-height: 100px;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
   font-size: calc(10px + 2vmin);
   color: white;
 }
 
 
+.HeaderMenu{
+  
+  /* display: inline-block; */
+  width: max-content;
+}
+
+.HeaderMenu .Collapsible{
+  background-color: #0C4063;
+  padding: 5px;
+}
+
+.Header button{
+  padding: 5px;
+  font-size: 10px;
+  background-color: white;
+  /* max-height: 20px; */
+}
+
+li{
+  font-size: 12px;
+}
 
 h1 {
   color: white;

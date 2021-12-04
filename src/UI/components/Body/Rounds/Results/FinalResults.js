@@ -9,21 +9,21 @@ export const FinalResults = (props) => {
 const players = useSelector(state => state.game.players);
 
 function startNewGame(){
-
+  props.startNewGame();
 }
 
     return (
       <div className="ShowResults">
           <h3>Final Results:</h3>
-          
+          <h4>Winner by Score: {props.winnerByScore} ({props.highestScore}) </h4>
+          {/* <p>Points: {props.highestScore}</p> */}
+          <h4>Winner by Drinks: {props.winnerByDrinks} ({props.mostDrinks}) </h4>
+          {/* <p>Drinks: {props.mostDrinks} </p> */}
           {players.map(player => {
       return <PlayerFinalResult className="PlayerFinalResult" key={player.id} player={player} />
     })}
-      <p>Winner by Score: {props.winnerByScore} </p>
-          <p>Points: {props.highestScore}</p>
-          <p>Winner by Drinks: {props.winnerByDrinks} </p>
-          <p>Drinks: {props.mostDrinks} </p>
-          <button onClick={startNewGame()}>Start new Game</button>
+      
+          <button onClick={startNewGame}>Start New Game!</button>
       </div>
     )
   
