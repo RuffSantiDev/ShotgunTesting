@@ -6,32 +6,37 @@ import Player from "../../classes/Player/Player";
 const player01 = new Player ('Player 01', 'Enter Player Name');
 const player02 = new Player ('Player 02', 'Enter Player Name');
 
+const initialState = {
+  gameActive: false,
+  numberOfPlayers: 2,
+  currentRound: 0,
+  // roundMax should be 16 -> roundMax = 2 for testing
+  roundMax: 1,
+  currentPlayerIndex: 0,
+  // player objects need to be stored as serialized values for web transmission -> getPlayers & updatePlayers
+  // JSON.stringify to serialize
+  // JSON.parse to deserialize
+  players: [player01, player02],
+  cards: [1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4],
+  winnerByScore: 'not set yet',
+  highestScore: 0,
+  winnerByDrinks: 'not set yet',
+  mostDrinks: 0,
+};
 
 export const gameSlice = createSlice({
   name: 'game',
-  initialState: {
-    gameActive: false,
-    numberOfPlayers: 2,
-    currentRound: 0,
-    // roundMax should be 16 -> roundMax = 2 for testing
-    roundMax: 5,
-    currentPlayerIndex: 0,
-    // player objects need to be stored as serialized values for web transmission -> getPlayers & updatePlayers
-    // JSON.stringify to serialize
-    // JSON.parse to deserialize
-    players: [player01, player02],
-    cards: [1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4],
-    winnerByScore: 'not set yet',
-    highestScore: 0,
-    winnerByDrinks: 'not set yet',
-    mostDrinks: 0,
-  },
+  initialState,
   reducers: {
     activateGame: (state) => {
       state.gameActive = true;
     },
     deactivateGame: (state) => {
       state.gameActive = false;
+    },
+    resetGame: (state) => {
+
+      // local browser storage needs to be cleared (pending implementation)
     },
     setNrOfPlayers: (state, action) => {
       state.numberOfPlayers = action.payload;
@@ -76,7 +81,6 @@ export const gameSlice = createSlice({
         array[j] = temp;
       }
       state.cards = array;
-      // console.log('generated cards array: ' + array);
     },
     toggleNextRound: (state) => {
       if(state.currentRound < state.roundMax) {  
@@ -84,14 +88,16 @@ export const gameSlice = createSlice({
         };
       },
 
-      // this method should call the create round result from Player object after each round -> not working yet
+    // creates round results for each player
     calculatePlayerResults: (state) => {
       state.players.forEach(player => {
-        player.setCurrentRound = state.currentRound;
+        player.currentRound = state.currentRound;
         player.createRoundResult(state.cards);
       })
       console.log(state.players[0]);
     },
+    // calculates drink units each player needs to drink
+    // drink units are calculated from the sum of all points - the individual round result (points*multiplier) of the player
     calculateDrinkUnits: (state) => {
       let overallDrinkUnits = 0;
       state.players.forEach(player => {

@@ -30,7 +30,7 @@ export const Results = (props) => {
   }
 
   function showFinalResults(){
-    props.showFinalResults();
+    props.toggleFinalResults();
   }
 
 

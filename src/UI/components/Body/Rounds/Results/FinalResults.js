@@ -8,6 +8,9 @@ export const FinalResults = (props) => {
 
 const players = useSelector(state => state.game.players);
 
+function startNewGame(){
+
+}
 
     return (
       <div className="ShowResults">
@@ -20,6 +23,7 @@ const players = useSelector(state => state.game.players);
           <p>Points: {props.highestScore}</p>
           <p>Winner by Drinks: {props.winnerByDrinks} </p>
           <p>Drinks: {props.mostDrinks} </p>
+          <button onClick={startNewGame()}>Start new Game</button>
       </div>
     )
   

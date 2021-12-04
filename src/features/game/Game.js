@@ -26,6 +26,7 @@ export const Game = () => {
   const highestScore = useSelector((state) => state.game.highestScore);
   const winnerByDrinks = useSelector((state) => state.game.winnerByDrinks);
   const mostDrinks = useSelector((state) => state.game.mostDrinks);
+  const showFinalResults = useSelector((state) => state.game.showFinalResults);
 
   // for testing
   useEffect(() => {
@@ -55,11 +56,19 @@ export const Game = () => {
   }
 
   function renderFinalResult(){
-    if (gameActive === false && currentRound === roundMax){
-      return <FinalResults winnerByDrinks={winnerByDrinks} mostDrinks={mostDrinks} winnerByScore={winnerByScore} highestScore={highestScore} />
+    if (showFinalResults === true && currentRound === roundMax){
+      return <FinalResults winnerByDrinks={winnerByDrinks} mostDrinks={mostDrinks} winnerByScore={winnerByScore} highestScore={highestScore} startNewGame={startNewGame} />
     }
     // return <FinalResults winnerByDrinks={winnerByDrinks} mostDrinks={mostDrinks} winnerByScore={winnerByScore} highestScore={highestScore} />
   }
+
+  function startNewGame(){
+    // slice method -> need to create
+    // dispatch(resetGame());
+
+  }
+
+  
 
 
     

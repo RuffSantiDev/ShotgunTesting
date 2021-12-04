@@ -7,7 +7,8 @@ import { Card } from "../../../../features/card/Card";
 import { DrawCardPrompt } from "./Card/DrawCardPrompt";
 import { ReadyNextPlayerPrompt } from "./Parts/ReadyNextPlayerPrompt";
 import { Results } from "./Results/Results";
-import './Round.css'
+import { FinalResults } from "./Results/FinalResults"
+import './Round.css';
 
 // import game actions
 import { updateCurrentPlayerIndex, calculatePlayerResults, calculateDrinkUnits, toggleNextRound, resetCurrentPlayerIndex, determineWinnerByScore, determineWinnerByDrinks, deactivateGame } from "../../../../features/game/gameSlice";
@@ -22,19 +23,25 @@ import { updateCurrentPlayerIndex, calculatePlayerResults, calculateDrinkUnits, 
 export const Round = () => {
   const dispatch = useDispatch();
 
+  // state variables
   const players = useSelector(state => state.game.players);
   const cards = useSelector(state => state.game.cards);
   const currentRound = Number(useSelector((state) => state.game.currentRound));
   const roundMax = useSelector(state => state.game.roundMax);
   const numberOfPlayers = Number(useSelector((state) => state.game.numberOfPlayers));
   const currentPlayerIndex = Number(useSelector((state) => state.game.currentPlayerIndex));
+  const winnerByScore = useSelector((state) => state.game.winnerByScore);
+  const highestScore = useSelector((state) => state.game.highestScore);
+  const winnerByDrinks = useSelector((state) => state.game.winnerByDrinks);
+  const mostDrinks = useSelector((state) => state.game.mostDrinks);
+
+  // local variables
   const [showNextPlayerPrompt, setShowNextPlayerPrompt] = useState(true);
   const [showEnterGuessPrompt, setShowEnterGuessPrompt] = useState(false);
   const [showDrawCardPrompt, setShowDrawCardPrompt] = useState(false);
   const [showCard, setShowCard] = useState(false);
   const [showResults, setShowResults] = useState(false);
-  const [roundActive, setRoundActive] = useState(true);
-  
+  const [showFinalResults, setShowFinalResults] = useState(false);
 
   // useEffect(() => {
   //   renderEnterGuessPrompt();
@@ -132,24 +139,39 @@ export const Round = () => {
 
   function renderResults(){
     if(showResults === true){
-      return <Results startNextRound={startNextRound} showFinalResults={showFinalResults} />
+      return <Results startNextRound={startNextRound} toggleFinalResults={toggleFinalResults} />
     }
   }
 
-  function showFinalResults(){
+  function toggleFinalResults(){
+    console.log('final results toggled');
     dispatch(determineWinnerByScore());
     dispatch(determineWinnerByDrinks());
-    dispatch(deactivateGame());
+    setShowFinalResults(true);
+    setShowResults(false);
   }
 
+  function renderFinalResults(){
+    if (showFinalResults === true && currentRound === roundMax){
+      return <FinalResults winnerByDrinks={winnerByDrinks} mostDrinks={mostDrinks} winnerByScore={winnerByScore} highestScore={highestScore} startNewGame={startNewGame} />
+    }
+    // return <FinalResults winnerByDrinks={winnerByDrinks} mostDrinks={mostDrinks} winnerByScore={winnerByScore} highestScore={highestScore} />
+  }
+
+  function startNewGame(){
+
+  }
 
   function renderRoundLabel(){
-    if (currentRound === roundMax){
-      return <h2> Final Round! </h2>
+    while(showFinalResults === false){
+      if (currentRound === roundMax){
+        return <h2> Final Round! </h2>
+      }
+      else {
+        return <h2> Round {currentRound} </h2>
+      }
     }
-    else {
-      return <h2> Round {currentRound} </h2>
-    }
+    
   }
     
   return(
@@ -160,6 +182,7 @@ export const Round = () => {
       {renderDrawCardPrompt()}
       {renderCard()}
       {renderResults()}
+      {renderFinalResults()}
     </div>
   )
 }

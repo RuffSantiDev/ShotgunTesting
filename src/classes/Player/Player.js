@@ -20,7 +20,7 @@ class Player {
     this._isShotgun = false;
     this._multipliers = [];
     this._currentMultiplier = 1;
-    this._currentRound = 1;
+    this._currentRound = 0;
   }
   
 
