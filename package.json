@@ -36,9 +36,7 @@
   },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.",
   "main": "index.js",
-  "devDependencies": {
-    "jest": "^27.4.3"
-  },
+  "devDependencies": {},
   "author": "RS",
   "license": "ISC"
 }
