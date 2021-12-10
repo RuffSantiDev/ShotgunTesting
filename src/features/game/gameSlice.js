@@ -11,7 +11,7 @@ const initialState = {
   numberOfPlayers: 2,
   currentRound: 0,
   // roundMax should be 16 -> roundMax = 2 for testing
-  roundMax: 2,
+  roundMax: 16,
   currentPlayerIndex: 0,
   // player objects need to be stored as serialized values for web transmission -> getPlayers & updatePlayers
   // JSON.stringify to serialize
