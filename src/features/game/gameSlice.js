@@ -39,7 +39,6 @@ export const gameSlice = createSlice({
       // quick fix -> reload browser page
       window.location.reload(false);
       // once the state is stored in the cache, the cache needs to be cleared as well
-
     },
     setNrOfPlayers: (state, action) => {
       state.numberOfPlayers = action.payload;
@@ -149,3 +148,18 @@ export const gameSlice = createSlice({
 export const { activateGame, deactivateGame, setNrOfPlayers, updateCurrentPlayerIndex, resetCurrentPlayerIndex, getPlayers, updatePlayers, createPlayers, updatePlayerName, randomizeCards, toggleNextRound, calculatePlayerResults, calculateDrinkUnits, determineWinnerByScore, determineWinnerByDrinks, resetGame} = gameSlice.actions;
 
 export default gameSlice.reducer;
+  setNrOfPlayers,
+  updateCurrentPlayerIndex,
+  resetCurrentPlayerIndex,
+  getPlayers,
+  updatePlayers,
+  createPlayers,
+  updatePlayerName,
+  randomizeCards,
+  toggleNextRound,
+  calculatePlayerResults,
+  calculateDrinkUnits,
+  determineWinnerByScore,
+  determineWinnerByDrinks,
+  resetGame
+} = gameSlice.actions;

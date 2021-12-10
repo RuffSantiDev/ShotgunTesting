@@ -74,3 +74,9 @@ export const Game = () => {
   
 
 }
+      {/* for testing decomment next line*/}
+      {/* {verifyData()} */}
+      <Footer />
+      {/* <Info /> */}
+    </div>
+  );
